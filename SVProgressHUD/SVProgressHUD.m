@@ -349,12 +349,15 @@ static const CGFloat SVProgressHUDLabelSpacing = 8.0f;
 #pragma mark - Dismiss Methods
 
 + (void)popActivity {
-    if([self sharedView].activityCount > 0) {
-        [self sharedView].activityCount--;
-    }
-    if([self sharedView].activityCount == 0) {
-        [[self sharedView] dismiss];
-    }
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if([SVProgressHUD sharedView].activityCount > 0) {
+            [SVProgressHUD sharedView].activityCount--;
+        }
+        
+        if([SVProgressHUD sharedView].activityCount == 0) {
+            [[SVProgressHUD sharedView] dismiss];
+        }
+    }];
 }
 
 + (void)dismiss {
